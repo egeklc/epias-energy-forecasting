@@ -10,3 +10,6 @@ data/raw/*
 
 !data/processed/.gitkeep
 !data/raw/.gitkeep
+
+models/*
+!models/.gitkeep
