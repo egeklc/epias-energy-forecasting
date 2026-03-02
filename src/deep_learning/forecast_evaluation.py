@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_absolute_percentage_error
 
 
 def run_forecast_and_plot(model, 
@@ -40,6 +40,7 @@ def run_forecast_and_plot(model,
     
     rmse = np.sqrt(mean_squared_error(y_true, y_pred))
     mae = mean_absolute_error(y_true, y_pred)
+    mape = mean_absolute_percentage_error(y_true, y_pred) * 100
     
     dates = df["date"].iloc[start_idx:start_idx + horizon]
     
@@ -48,7 +49,7 @@ def run_forecast_and_plot(model,
     plt.grid(True, alpha=0.5, linestyle="--")
     plt.plot(dates, y_true, label="Real", alpha=1)
     plt.plot(dates, y_pred, label="Prediction", alpha=0.8)
-    plt.title(f"24-Step Forecast | MAE={mae:.2f} | RMSE={rmse:.2f}")
+    plt.title(f"24-Step Forecast | MAE={mae:.2f} | RMSE={rmse:.2f} | MAPE={mape:.2f}")
     ax = plt.gca()
     ax.xaxis.set_major_locator(mdates.HourLocator(interval=3))
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d %H:%M"))
@@ -58,4 +59,4 @@ def run_forecast_and_plot(model,
     plt.legend()
     plt.show()
     
-    return {"MAE": mae, "RMSE": rmse}
+    return {"MAE": mae, "RMSE": rmse, "MAPE": mape}
